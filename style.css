@@ -1,0 +1,57 @@
+.bubble {
+    width: 90px;
+    height: 80px;
+    background-color: skyblue;
+    position: absolute;
+    border-radius: 25% 40% 25% 40%;
+    animation: float 2s infinite ease-in-out;
+    box-shadow: 0 0 50px #0072ff, 0 0 100px #0072ff, 0 0 150px #0072ff, 0 0 200px #0072ff;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: scale(1);
+      border-radius: 25% 40% 25% 70%;
+    }
+    50% {
+      transform: scale(1.1);
+      border-radius: 50% 80% 40% 50%;
+    }
+  }
+  
+
+
+#bubble1 {
+    top: 100px;
+    background-color: salmon;
+    box-shadow: 0 0 50px #ff0000, 0 0 100px #ff0000, 0 0 150px #ff0000, 0 0 200px #ff0000;
+    animation: float 2s infinite ease-in-out;
+    rotate: 90deg;
+}
+#bubble2 {
+    top: 100px;
+    left: 200px;
+    right: auto;
+    background-color: skyblue;
+    box-shadow: 0 0 50px #0072ff, 0 0 100px #0072ff, 0 0 150px #0072ff, 0 0 200px #0072ff;
+    animation: float 1.5s infinite ease;
+    rotate: 270deg;
+}
+#bubble3 {
+    top: 250px;
+    background-color: aquamarine;
+    box-shadow: 0 0 50px #00ff73, 0 0 100px #00ff73, 0 0 150px #00ff73, 0 0 200px #00ff73;
+    animation: float 1s infinite ease-out;
+}
+
+body {
+    background-color: #111;
+    color: white;
+}
+
+.note {
+    position: fixed;
+    z-index: 100;
+    user-select: none;
+}
+  
