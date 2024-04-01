@@ -79,13 +79,14 @@ document.addEventListener("DOMContentLoaded", () => {
           )
         ) {
           let selectedWidth =
-            parseInt(window.getComputedStyle(selected).width) + 1;
+            parseFloat(window.getComputedStyle(selected).width) + 0.3;
           let selectedHeight =
-            parseInt(window.getComputedStyle(selected).height) + 1;
+            parseFloat(window.getComputedStyle(selected).height) + 0.3;
 
-          let bubbleWidth = parseInt(window.getComputedStyle(bubble).width) + 1;
+          let bubbleWidth =
+            parseFloat(window.getComputedStyle(bubble).width) + 0.3;
           let bubbleHeight =
-            parseInt(window.getComputedStyle(bubble).height) + 1;
+            parseFloat(window.getComputedStyle(bubble).height) + 0.3;
 
           // Check if the new size exceeds screen dimensions
           if (selectedWidth > screenWidth || selectedHeight > screenHeight) {
