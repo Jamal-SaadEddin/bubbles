@@ -5,27 +5,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const bubbles = document.querySelectorAll(".bubble");
   bubbles.forEach((bubble) => {
+    // Handle mouse down events
     bubble.addEventListener("mousedown", (e) => {
-      selectedBubble = bubble;
-      offsetX = e.clientX - bubble.getBoundingClientRect().left;
-      offsetY = e.clientY - bubble.getBoundingClientRect().top;
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
+      startDrag(e, bubble);
     });
+
+    // Handle touch start events
+    bubble.addEventListener(
+      "touchstart",
+      (e) => {
+        startDrag(e, bubble);
+      },
+      { passive: false }
+    ); // to allow e.preventDefault()
+
+    function startDrag(e, bubble) {
+      // Distinguish between touch and mouse events
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+      // Calculate offset
+      offsetX = clientX - bubble.getBoundingClientRect().left;
+      offsetY = clientY - bubble.getBoundingClientRect().top;
+
+      selectedBubble = bubble;
+
+      if (e.touches) {
+        e.preventDefault(); // Prevent scrolling for touch events
+      }
+    }
+
+    function onMove(e) {
+      if (!selectedBubble) return;
+
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+      // Move bubble
+      selectedBubble.style.left = `${clientX - offsetX}px`;
+      selectedBubble.style.top = `${clientY - offsetY}px`;
+
+      checkCollision(selectedBubble);
+    }
+
+    function endDrag() {
+      selectedBubble = null;
+    }
+
+    // Listen for mouse move and up events on the document
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", endDrag);
+
+    // Listen for touch move and end events on the document
+    document.addEventListener("touchmove", onMove, { passive: false });
+    document.addEventListener("touchend", endDrag);
+    document.addEventListener("touchcancel", endDrag); // Handle interruption
   });
-
-  function onMouseMove(e) {
-    if (!selectedBubble) return;
-    selectedBubble.style.left = e.clientX - offsetX + "px";
-    selectedBubble.style.top = e.clientY - offsetY + "px";
-    checkCollision(selectedBubble);
-  }
-
-  function onMouseUp() {
-    document.removeEventListener("mousemove", onMouseMove);
-    document.removeEventListener("mouseup", onMouseUp);
-    selectedBubble = null;
-  }
 
   function checkCollision(selected) {
     const screenWidth = window.innerWidth;
@@ -48,15 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
           let selectedHeight =
             parseInt(window.getComputedStyle(selected).height) + 1;
 
-          // selected.style.width = selectedWidth;
-          // selected.style.height = selectedHeight;
-
           let bubbleWidth = parseInt(window.getComputedStyle(bubble).width) + 1;
           let bubbleHeight =
             parseInt(window.getComputedStyle(bubble).height) + 1;
-
-          // bubble.style.width = bubbleWidth;
-          // bubble.style.height = bubbleHeight;
 
           // Check if the new size exceeds screen dimensions
           if (selectedWidth > screenWidth || selectedHeight > screenHeight) {
